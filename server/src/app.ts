@@ -17,8 +17,6 @@ app.use(
   })
 );
 
-console.log("Hello");
-
 app.use(express.static(join(__dirname, "../../public")));
 
 app.get("/liveness", (_, res) => {

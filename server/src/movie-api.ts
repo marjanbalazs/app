@@ -22,6 +22,11 @@ export const movieAPI = express.Router();
 
 movieAPI.use(express.json());
 
+movieAPI.use((_, res, next) => {
+  res.set("Cache-Control", "no-cache, no-store, must-revalidate");
+  next();
+});
+
 movieAPI.get("/query", <
   express.RequestHandler<object, MovieSearchResponse, unknown, SearchParams>
 >(async (req, res, next) => {
