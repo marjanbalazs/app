@@ -48,8 +48,7 @@ app.get("/", (_, res) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use(<express.ErrorRequestHandler>((err, _, res, __) => {
   logger.error({ msg: err as Error });
-  logger.error({ msg: err.stack });
-  throw err;
+  res.send(500);
 }));
 
 app.listen(appPort, () => {
