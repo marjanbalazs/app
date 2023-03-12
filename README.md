@@ -8,6 +8,7 @@ Example:
 ```bash
 MOVIE_API_TOKEN=<YOUR_CREDENTIALS>
 MOVIE_API_URL=https://api.themoviedb.org
+MOVIE_API_POSTER_URL=https://image.tmdb.org/t/p/original
 APP_PORT=4789
 REDIS_PORT=6379
 REDIS_HOST=localhost
