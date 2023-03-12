@@ -5,7 +5,11 @@ import { join } from "path";
 import { movieAPI } from "./movie-api";
 import pinoHttp from "pino-http";
 
-const { logger, appPort } = getConfig();
+const {
+  logger,
+  appPort,
+  movieApi: { iconUrl },
+} = getConfig();
 
 const app = express();
 
@@ -16,6 +20,8 @@ app.use(
     logger,
   })
 );
+
+app.set("view engine", "ejs");
 
 app.use(express.static(join(__dirname, "../../public")));
 
@@ -30,7 +36,9 @@ app.get("/readiness", (_, res) => {
 app.use("/api", movieAPI);
 
 app.get("/", (_, res) => {
-  res.sendFile(join(__dirname, "../../frontend/www/index.html"));
+  res.render("pages/index", {
+    iconUrl: iconUrl,
+  });
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

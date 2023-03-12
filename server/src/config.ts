@@ -4,6 +4,7 @@ const APP_PORT = process.env.APP_PORT as string;
 
 const MOVIE_API_URL = process.env.MOVIE_API_URL as string;
 const MOVIE_API_TOKEN = process.env.MOVIE_API_TOKEN as string;
+const MOVIE_API_POSTER_URL = process.env.MOVIE_API_POSTER_URL as string;
 
 const REDIS_HOST = process.env.REDIS_HOST as string;
 const REDIS_PORT = process.env.REDIS_PORT as string;
@@ -17,6 +18,7 @@ interface Config {
   movieApi: {
     url: string;
     token: string;
+    iconUrl: string;
   };
   redis: {
     host: string;
@@ -38,6 +40,7 @@ const createConfig = (): (() => Config) => {
         movieApi: {
           url: MOVIE_API_URL,
           token: MOVIE_API_TOKEN,
+          iconUrl:  MOVIE_API_POSTER_URL,
         },
         redis: {
           host: REDIS_HOST,

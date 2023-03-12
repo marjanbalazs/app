@@ -64,7 +64,7 @@ const MovieTile = ({ movie }: { movie: Movie }) => {
               maxHeight: "100%",
               maxWidth: "100%",
             }}
-            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+            src={`${window.RUNTIME_CONFIG.iconUrl}${movie.poster_path}`}
           ></img>
         ) : (
           <div></div>
