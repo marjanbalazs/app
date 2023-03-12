@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  cache:
+    image: redis:7.0.9
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+      - backend-network
+  app:
+    tty: true
+    stdin_open: true
+    image: my-app
+    build: .
+    depends_on:
+      - cache
+    ports:
+      - '4789:4789'
+    env_file:
+      - server/.env
+    environment:
+      - REDIS_HOST=cache
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
