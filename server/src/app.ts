@@ -4,6 +4,7 @@ import { getConfig } from "./config";
 import { join } from "path";
 import { movieAPI } from "./movie-api";
 import pinoHttp from "pino-http";
+import ejs from "ejs";
 
 const {
   logger,
@@ -22,6 +23,9 @@ app.use(
 );
 
 app.set("view engine", "ejs");
+// This tricks the bundler
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+app.engine(".ejs", ejs.renderFile);
 
 app.use(express.static(join(__dirname, "../../public")));
 
@@ -44,7 +48,8 @@ app.get("/", (_, res) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use(<express.ErrorRequestHandler>((err, _, res, __) => {
   logger.error({ msg: err as Error });
-  res.sendStatus(500);
+  logger.error({ msg: err.stack });
+  throw err;
 }));
 
 app.listen(appPort, () => {
