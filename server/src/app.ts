@@ -52,5 +52,5 @@ app.use(<express.ErrorRequestHandler>((err, _, res, __) => {
 }));
 
 app.listen(appPort, () => {
-  logger.info({ msg: "Application started" });
+  logger.info({ msg: `Application started on port ${appPort}` });
 });

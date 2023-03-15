@@ -31,3 +31,29 @@ npm run dev
 ```bash
 docker-compose up --force-recreate --no-deps --build
 ```
+
+## Run with minikube
+
+1. Install minikube on your system, for mac:
+```bash
+brew install kubectl
+brew install minikube
+```
+2. Start minikube and start the cluster
+```bash
+minikube start
+```
+3. Run the deploy script, if you haven't already give a password to your redis server or the bitname chart will autogenerate one
+```bash
+./deploy-minikube.sh
+```
+4. Wait until the redis stateful set bootstraps
+
+Access the service by running
+```bash
+minikube service app-deployment-movie-app
+```
+
+## Troubleshooting
+
+Be mindful that if you ran the minikube docker-env command you will won't be able to use docker compose in the same terminal.

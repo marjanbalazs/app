@@ -11,7 +11,7 @@ services:
   app:
     tty: true
     stdin_open: true
-    image: my-app
+    image: movie-app
     build: .
     depends_on:
       - cache

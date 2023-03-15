@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: movie-app-config
+data:
+  MOVIE_API_URL: "{{ .Values.appValues.movie.url }}"
+  MOVIE_API_POSTER_URL: "{{ .Values.appValues.movie.posterUrl }}"
+  APP_PORT:  "{{ .Values.service.port }}"
+  REDIS_PORT: "6379"
+  REDIS_HOST: "{{ printf "%s-redis-master.%s.svc.cluster.local" .Release.Name .Release.Namespace }}"
+  REDIS_USERNAME: "{{ .Values.global.redis.username }}"

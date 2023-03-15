@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "movie-app.fullname" . }}
+  labels:
+    {{- include "movie-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "movie-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "movie-app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "movie-app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4789
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          - name: MOVIE_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: movie-app-secret
+                key: MOVIE_API_TOKEN
+          - name: MOVIE_API_URL
+            valueFrom:
+              configMapKeyRef:
+                name: movie-app-config
+                key: MOVIE_API_URL
+          - name: MOVIE_API_POSTER_URL
+            valueFrom:
+              configMapKeyRef:
+                name: movie-app-config
+                key: MOVIE_API_POSTER_URL
+          - name: APP_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: movie-app-config
+                key: APP_PORT
+          - name: REDIS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: movie-app-config
+                key: REDIS_PORT
+          - name: REDIS_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: movie-app-config
+                key: REDIS_HOST
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: movie-app-secret
+                key: REDIS_PASSWORD
+          - name: REDIS_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: movie-app-config
+                key: REDIS_USERNAME
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

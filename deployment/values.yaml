@@ -1,0 +1,10 @@
+global:
+  redis:
+    password: ""
+    username: ""
+
+appValues:
+  movie:
+    url: "https://api.themoviedb.org"
+    posterUrl: "https://image.tmdb.org/t/p/original"
+    apiToken : ""
