@@ -43,11 +43,12 @@ brew install minikube
 ```bash
 minikube start
 ```
-3. Run the deploy script, if you haven't already give a password to your redis server or the bitname chart will autogenerate one
+3. Run the deploy script. If you haven't already given a password to your redis server then bitnami chart will
+autogenerate one and you wont be able to connect.
 ```bash
 ./deploy-minikube.sh
 ```
-4. Wait until the redis stateful set bootstraps
+1. Wait until the redis stateful set bootstraps
 
 Access the service by running
 ```bash
@@ -56,4 +57,4 @@ minikube service app-deployment-movie-app
 
 ## Troubleshooting
 
-Be mindful that if you ran the minikube docker-env command you will won't be able to use docker compose in the same terminal.
+Be mindful that if you ran the minikube docker-env command you won't be able to use docker compose in the same terminal.
